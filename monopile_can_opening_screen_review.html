@@ -3,6 +3,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Monopile can-opening screen — review report</title>
 <style>
+  Server: HYCOM’s subset service (free, no login): https://ncss.hycom.org/thredds/catalogs/GLBu0.08/reanalysis.html
+Location: 54.04°N, 6.88°E. The deepest depth bin with data at this point is 25 m, not the 30 m the report states.
+Variables: water_temp, salinity at depths of 0 m (surface), about 15 m (mid) and 25 m (near bed).
+Datasets (GLBu0.08):
+1994 to Jul 1995: expt_19.0/3hrly
+Aug 1995 to 2012: expt_19.1/3hrly
+2013–2016: expt_90.9, expt_91.0, expt_91.1, expt_91.2. These are daily only on HYCOM’s server, so the report’s 3-hourly series for these years can’t be matched exactly.
+Example request (one month, one depth, CSV):
+https://ncss.hycom.org/thredds/ncss/grid/GLBu0.08/expt_19.1/3hrly?var=water_temp&var=salinity&latitude=54.04&longitude=6.88&vertCoord=0&time_start=2003-03-01T00:00:00Z&time_end=2003-03-31T21:00:00Z&accept=csv
+Unpacking values: values come back packed. Real value = raw × 0.001 + 20, and −30000 means no data.
+Speed: about 100 s per month per depth, so loop month by month, run several requests in parallel, and allow a few hours.
+Statistics: monthly and annual mean, min, max and percentiles. Density can be calculated from temperature and salinity with the UNESCO EOS-80 seawater formula.
 :root{color-scheme:light;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#243443;background:#edf1f5}
 *{box-sizing:border-box}body{margin:0}main{max-width:1250px;margin:32px auto;padding:42px 48px;background:white;border-radius:10px;box-shadow:0 4px 24px #162b4010}
 h1{font-size:2.1rem;line-height:1.2;color:#14364c;margin-top:0}h2{margin-top:2.5rem;border-bottom:2px solid #dde8ef;padding-bottom:.5rem;color:#14364c}h3{margin-top:2rem}
